@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SHADOW-X APPS</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:#0a0f1a;
+      --card:#101628;
+      --muted:#9aa4c7;
+      --text:#e8ecff;
+      --primary:#9b5cff;
+      --secondary:#00d4ff;
+      --accent:#6dd6ff;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body {
+      font-family:Poppins, sans-serif;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: radial-gradient(circle at 20% 20%, rgba(155,92,255,.2), transparent 30%),
+                  radial-gradient(circle at 80% 10%, rgba(0,212,255,.2), transparent 25%),
+                  radial-gradient(circle at 50% 90%, rgba(109,214,255,.15), transparent 30%),
+                  #0a0f1a;
+      overflow:hidden;
+      padding:20px;
+    }
+    .card {
+      background: rgba(255,255,255,.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 18px;
+      padding: 22px 20px;
+      width: 100%;
+      max-width: 340px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(155,92,255,.3);
+      animation: fadeIn 1s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .logo {
+      width: 70px; height: 70px; border-radius: 50%;
+      margin: 0 auto 14px;
+      box-shadow:0 0 16px var(--primary), 0 0 30px rgba(0,212,255,.4);
+      object-fit:cover;
+    }
+    .title {
+      font-size:22px;
+      font-family:Orbitron, sans-serif;
+      font-weight:800;
+      color: var(--primary);
+      margin-bottom:4px;
+      text-shadow:0 0 10px rgba(155,92,255,.7);
+    }
+    .subtitle {
+      font-size:12px;
+      color: var(--muted);
+      margin-bottom:20px;
+    }
+    .form-group {
+      position:relative;
+      margin-bottom:14px;
+    }
+    .form-group i {
+      position:absolute;left:12px;top:50%;
+      transform:translateY(-50%);
+      color:var(--secondary);
+      font-size:13px;
+    }
+    input {
+      width:100%;
+      padding:12px 12px 12px 36px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.15);
+      background:rgba(7,10,20,.6);
+      color:var(--text);
+      font-size:13px;
+      outline:none;
+      transition: all .3s;
+    }
+    input:focus {
+      border-color:var(--secondary);
+      box-shadow:0 0 6px var(--secondary);
+    }
+    button {
+      width:100%;
+      padding:12px;
+      font-size:14px;
+      font-weight:600;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      background:linear-gradient(90deg, var(--primary), var(--secondary));
+      color:white;
+      transition: all .3s ease;
+      box-shadow:0 0 10px rgba(155,92,255,.4);
+    }
+    button:hover {
+      transform:translateY(-2px) scale(1.03);
+      box-shadow:0 0 16px rgba(0,212,255,.6);
+    }
+    .buy-access {
+      margin-top:14px;
+      display:inline-block;
+      font-size:12px;
+      padding:8px 16px;
+      border-radius:10px;
+      font-weight:500;
+      background:linear-gradient(90deg,var(--secondary),var(--accent));
+      color:white;
+      text-decoration:none;
+      box-shadow:0 0 12px rgba(0,212,255,.4);
+      font-family:Poppins, sans-serif;
+      transition: all .25s;
+    }
+    .buy-access:hover { transform:scale(1.05); }
+    .footer {
+      margin-top:20px;
+      font-size:10px;
+      color:var(--muted);
+    }
+    .toast {
+      position:fixed;
+      bottom:30px;
+      left:50%;
+      transform:translateX(-50%);
+      background: var(--primary);
+      color:white;
+      padding:10px 16px;
+      border-radius:8px;
+      font-size:12px;
+      font-weight:500;
+      box-shadow:0 0 12px rgba(155,92,255,.5);
+      opacity:0;
+      animation: fadeInOut 3.8s ease forwards;
+      z-index:100;
+    }
+    @keyframes fadeInOut {
+      0%{opacity:0; transform:translate(-50%,20px);}
+      10%{opacity:1; transform:translate(-50%,0);}
+      90%{opacity:1;}
+      100%{opacity:0; transform:translate(-50%,20px);}
+    }
+    
+    /* Dashboard Styles */
+    .dashboard {
+      display: none;
+      max-width: 360px;
+    }
+    
+    .buttons-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-bottom:16px;
+    }
+    
+    .buttons-grid button {
+      padding:12px;
+      font-size:13px;
+      font-weight:600;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      border:1px solid rgba(255,255,255,.15);
+      transition: all .3s ease;
+    }
+    
+    .buttons-grid button:hover {
+      box-shadow:0 0 12px var(--secondary);
+      transform:translateY(-2px) scale(1.03);
+    }
+    
+    .buttons-grid button.selected {
+      background:linear-gradient(90deg, var(--primary), var(--secondary));
+      color:white;
+      box-shadow:0 0 12px var(--primary);
+    }
+    
+    .execute-button {
+      width:100%;
+      padding:12px;
+      font-size:14px;
+      font-weight:600;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      background:linear-gradient(90deg, var(--primary), var(--secondary));
+      color:white;
+      margin-bottom:12px;
+      box-shadow:0 0 10px rgba(155,92,255,.4);
+      transition: all .3s ease;
+    }
+    
+    .execute-button:disabled {
+      opacity:.5;
+      cursor:not-allowed;
+    }
+    
+    .execute-button:hover:not(:disabled) {
+      transform:translateY(-2px) scale(1.03);
+      box-shadow:0 0 16px rgba(0,212,255,.6);
+    }
+    
+    .footer-action-container {
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      align-items:center;
+      gap:8px;
+      margin-top:20px;
+    }
+    
+    .footer-button {
+      background: rgba(255,255,255,0.05);
+      border:1px solid var(--primary);
+      border-radius:8px;
+      padding:8px 12px;
+      font-size:14px;
+      color: var(--primary);
+      display:flex;
+      align-items:center;
+      gap:6px;
+      transition: background .3s ease;
+    }
+    
+    .footer-button:hover {
+      background: rgba(155,92,255,.2);
+    }
+    
+    .footer-button a {
+      text-decoration:none;
+      color: var(--primary);
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    
+    /* Popup Tengah */
+    .popup {
+      position: fixed;
+      top:50%;
+      left:50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background: #111;
+      color: var(--secondary);
+      padding:16px 22px;
+      border-radius:12px;
+      box-shadow:0 0 20px rgba(0,212,255,.7);
+      font-weight:bold;
+      display:none;
+      z-index:9999;
+      animation: zoomFade 2s ease forwards;
+      text-align:center;
+    }
+    
+    @keyframes zoomFade {
+      0% { opacity:0; transform: translate(-50%, -50%) scale(0.8); }
+      15% { opacity:1; transform: translate(-50%, -50%) scale(1); }
+      85% { opacity:1; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity:0; transform: translate(-50%, -50%) scale(0.8); }
+    }
+    
+    /* Config Panel */
+    .config-panel {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(16, 22, 40, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 18px;
+      padding: 22px 20px;
+      width: 90%;
+      max-width: 340px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(155,92,255,.5);
+      z-index: 1000;
+      display: none;
+    }
+    
+    .config-panel h3 {
+      color: var(--primary);
+      margin-bottom: 20px;
+      font-family: Orbitron, sans-serif;
+    }
+    
+    .config-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .config-buttons button {
+      flex: 1;
+    }
+    
+    .close-config {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 20px;
+      cursor: pointer;
+      width: auto;
+    }
+    
+    .config-button {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      color: var(--secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+    
+    .config-button:hover {
+      background: rgba(155,92,255,.3);
+      transform: rotate(90deg);
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Card -->
+  <div class="card login" id="loginCard">
+    <button class="config-button" id="configButton">
+      <i class="fas fa-cog"></i>
+    </button>
+    
+    <img src="https://l.top4top.io/p_3547nzwxm0.jpg" alt="Logo" class="logo" />
+    <div class="icon"><i class="fas fa-skull-crossbones"></i></div>
+    <div class="title">Shadow - Trashed</div>
+    <div class="subtitle">Gateway Shadow Trashed and Fire</div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <i class="fas fa-user"></i>
+        <input type="text" name="username" placeholder="Username" required />
+      </div>
+      <div class="form-group">
+        <i class="fas fa-key"></i>
+        <input type="password" name="key" placeholder="Password" required />
+      </div>
+      <button type="submit">
+        <i class="fa-solid fa-right-to-bracket"></i> LOGIN
+      </button>
+    </form>
+
+    <a class="buy-access" href="https://t.me/vinzxiterr" target="_blank">
+      <i class="fas fa-coins"></i> Buy Key Access
+    </a>
+
+    <div class="footer">© 2025 VinzxExc1st</div>
+  </div>
+
+  <!-- Dashboard Card -->
+  <div class="card dashboard" id="dashboardCard">
+    <button class="config-button" id="dashboardConfigButton">
+      <i class="fas fa-cog"></i>
+    </button>
+    
+    <img src="https://e.top4top.io/p_3501jjn601.jpg" class="logo" alt="Logo">
+    <div class="title">Shadow - Trashed</div>
+    <div class="subtitle">Choose mode & target number</div>
+
+    <input type="text" id="targetNumber" placeholder="Please Input Target Number 628xx" />
+
+    <div class="buttons-grid">
+      <button class="mode-btn" data-mode="andros"><i class="fas fa-skull-crossbones"></i> CRASH ANDRO</button>
+      <button class="mode-btn" data-mode="ios"><i class="fas fa-dumpster-fire"></i> CRASH IPHONE</button>
+      <button class="mode-btn" data-mode="andros-delay"><i class="fas fa-skull-crossbones"></i> INVIS ANDRO</button>
+      <button class="mode-btn" data-mode="invis-iphone"><i class="fas fa-dumpster-fire"></i> INVIS IPHONE</button>
+    </div>
+
+    <button class="execute-button" id="executeBtn" disabled><i class="fas fa-rocket"></i> Kirim Bug</button>
+
+    <div class="footer-action-container">
+      <div class="footer-button">
+        <a href="https://t.me/vinzxiterr" target="_blank"><i class="fab fa-telegram"></i> Developer</a>
+      </div>
+      <div class="footer-button">
+        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Config Panel -->
+  <div class="config-panel" id="configPanel">
+    <button class="close-config" id="closeConfig">&times;</button>
+    <h3>Konfigurasi Login</h3>
+    
+    <div class="form-group">
+      <i class="fas fa-user"></i>
+      <input type="text" id="newUsername" placeholder="Username Baru" />
+    </div>
+    
+    <div class="form-group">
+      <i class="fas fa-key"></i>
+      <input type="password" id="newPassword" placeholder="Password Baru" />
+    </div>
+    
+    <div class="config-buttons">
+      <button id="saveConfig">
+        <i class="fas fa-save"></i> Simpan
+      </button>
+      <button id="resetConfig" style="background: linear-gradient(90deg, #ff6b6b, #ff8e8e);">
+        <i class="fas fa-undo"></i> Reset
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast and Popup -->
+  <div id="toast" class="toast" style="display:none;"></div>
+  <div id="popup" class="popup">✅ Success Send Bug</div>
+
+  <script>
+    // Default credentials
+    let credentials = {
+      username: "admin",
+      password: "shadow123"
+    };
+
+    // Load credentials from localStorage if available
+    if (localStorage.getItem('shadowCredentials')) {
+      credentials = JSON.parse(localStorage.getItem('shadowCredentials'));
+    }
+
+    // Elements
+    const loginCard = document.getElementById('loginCard');
+    const dashboardCard = document.getElementById('dashboardCard');
+    const loginForm = document.getElementById('loginForm');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const toast = document.getElementById('toast');
+    const popup = document.getElementById('popup');
+    const configPanel = document.getElementById('configPanel');
+    const configButton = document.getElementById('configButton');
+    const dashboardConfigButton = document.getElementById('dashboardConfigButton');
+    const closeConfig = document.getElementById('closeConfig');
+    const saveConfig = document.getElementById('saveConfig');
+    const resetConfig = document.getElementById('resetConfig');
+    const newUsername = document.getElementById('newUsername');
+    const newPassword = document.getElementById('newPassword');
+    
+    // Dashboard elements
+    const inputField = document.getElementById('targetNumber');
+    const modeButtons = document.querySelectorAll('.mode-btn');
+    const executeBtn = document.getElementById('executeBtn');
+    
+    let selectedMode = null;
+    
+    // Check if user is already logged in
+    document.addEventListener('DOMContentLoaded', function() {
+      if (localStorage.getItem('isLoggedIn') === 'true') {
+        showDashboard();
+      }
+      
+      // Check for URL parameters
+      const params = new URLSearchParams(window.location.search);
+      const msg = params.get("msg");
+      if (msg) {
+        showToast(msg);
+      }
+    });
+    
+    // Login form handler
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const username = this.username.value;
+      const password = this.key.value;
+      
+      if (username === credentials.username && password === credentials.password) {
+        localStorage.setItem('isLoggedIn', 'true');
+        showDashboard();
+        showToast('Login berhasil!');
+      } else {
+        showToast('Username atau password salah!');
+      }
+    });
+    
+    // Logout handler
+    logoutBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      localStorage.removeItem('isLoggedIn');
+      showLogin();
+      showToast('Anda telah logout');
+    });
+    
+    // Dashboard functionality
+    function isValidNumber(number) {
+      const pattern = /^62\d{7,13}$/;
+      return pattern.test(number);
+    }
+    
+    modeButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        modeButtons.forEach(btn => btn.classList.remove('selected'));
+        button.classList.add('selected');
+        selectedMode = button.getAttribute('data-mode');
+        executeBtn.disabled = false;
+      });
+    });
+    
+    executeBtn.addEventListener('click', () => {
+      const number = inputField.value.trim();
+      if (!isValidNumber(number)) {
+        showToast("Nomor tidak valid. Harus dimulai dengan 62 dan total 10-15 digit.");
+        return;
+      }
+      
+      // Tampilkan pop up sukses
+      popup.style.display = "block";
+      setTimeout(() => { popup.style.display = "none"; }, 2000);
+      
+      // Simulate execution (in a real app, this would make an API call)
+      console.log(`Executing ${selectedMode} on target ${number}`);
+    });
+    
+    // Config panel functionality
+    configButton.addEventListener('click', () => {
+      newUsername.value = credentials.username;
+      newPassword.value = credentials.password;
+      configPanel.style.display = 'block';
+    });
+    
+    dashboardConfigButton.addEventListener('click', () => {
+      newUsername.value = credentials.username;
+      newPassword.value = credentials.password;
+      configPanel.style.display = 'block';
+    });
+    
+    closeConfig.addEventListener('click', () => {
+      configPanel.style.display = 'none';
+    });
+    
+    saveConfig.addEventListener('click', () => {
+      if (newUsername.value && newPassword.value) {
+        credentials.username = newUsername.value;
+        credentials.password = newPassword.value;
+        localStorage.setItem('shadowCredentials', JSON.stringify(credentials));
+        configPanel.style.display = 'none';
+        showToast('Konfigurasi berhasil disimpan!');
+      } else {
+        showToast('Username dan password tidak boleh kosong!');
+      }
+    });
+    
+    resetConfig.addEventListener('click', () => {
+      credentials = {
+        username: "miwa",
+        password: "miwak"
+      };
+      localStorage.setItem('shadowCredentials', JSON.stringify(credentials));
+      newUsername.value = credentials.username;
+      newPassword.value = credentials.password;
+      showToast('Konfigurasi telah direset ke default!');
+    });
+    
+    // Helper functions
+    function showDashboard() {
+      loginCard.style.display = 'none';
+      dashboardCard.style.display = 'block';
+    }
+    
+    function showLogin() {
+      dashboardCard.style.display = 'none';
+      loginCard.style.display = 'block';
+    }
+    
+    function showToast(message) {
+      toast.textContent = message;
+      toast.style.display = "block";
+      setTimeout(() => {
+        toast.style.display = "none";
+      }, 4000);
+    }
+  </script>
+</body>
+</html>
